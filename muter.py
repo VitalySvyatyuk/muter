@@ -63,14 +63,9 @@ for wave in os.listdir("Audio"):
                     last = sound[sil[-1][0]:sil[-1][1]]
                     center = sound[0:sil[-1][0]]
             
-
-        try:
-            print(len(sil), sil[0], len(sound), len(first), len(center), len(last))
-        except:
-            print(len(sil), "0", len(sound), len(first), len(center), len(last))
         first = first - 30
         last = last - 30
         output = first + center + last
         output.export("Result/" +str(iter) + ".mp3", format="mp3")
-#        output.export("Result/" +str(iter) + ".wav", format="wav")
+        print(os.path.splitext(wave)[0] + " is ready.")
 
