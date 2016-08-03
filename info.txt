@@ -1,0 +1,12 @@
+1. Install Python 3 from here: https://www.python.org/ftp/python/3.5.2/python-3.5.2.exe (don't forget to select 
+checkbox "Add Python 3.5 to PATH")
+2. Unzip FFMPEG package from here: https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-latest-win64-shared.zip
+   You have to have exactly: c:\ffmpeg\bin\ffmpeg.exe
+3. Reboot system.
+4. Put muter.py and requirements.txt to the any directory. For example: c:\any
+5. Put your audios to the "Audio" folder near the muter.py: c:\any\Audio
+6. Open command line: Start -> Run -> type "cmd" -> Enter
+7. With command "cd" go to work folder (c:\any)
+8. type: pip install -r requirements.txt
+9. type: python muter.py
+10. That's it. Finally you will have "Result" folder near the "Audio" folder.
