@@ -1,7 +1,9 @@
 import os, sys
 from pydub import AudioSegment
 from pydub.silence import detect_silence
-import subprocess as sp
+from pydub.utils import mediainfo
+from subprocess import Popen, PIPE
+
 
 
 print("Muter 1.0")
@@ -62,10 +64,13 @@ for wave in os.listdir("Audio"):
                 if sil[-1][1] == len(sound):
                     last = sound[sil[-1][0]:sil[-1][1]]
                     center = sound[0:sil[-1][0]]
-            
-        first = first - 30
-        last = last - 30
+        filename = os.path.splitext(wave)[0]
+        first = AudioSegment.silent(duration=len(first))
+        last = AudioSegment.silent(duration=len(last))
         output = first + center + last
-        output.export("Result/" +str(iter) + ".mp3", format="mp3")
-        print(os.path.splitext(wave)[0] + " is ready.")
+        output.export("Result/" +filename+ ".mp3", format="mp3",
+                      )
+        print(filename + " is ready.")
+#        nam = "D:\\Mail\\David\\Audio\\sample_1.mp3"
+        print(mediainfo("Audio/" +filename+ ".mp3").get('TAG', {}))
 
