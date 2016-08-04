@@ -9,4 +9,5 @@ checkbox "Add Python 3.5 to PATH")
 7. With command "cd" go to work folder (c:\any)
 8. type: pip install pydub
 9. type: python muter.py
-10. That's it. Finally you will have "Result" folder near the "Audio" folder.
+10. type: pip install mutagen
+11. That's it. Finally you will have "Result" folder near the "Audio" folder.
