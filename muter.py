@@ -3,10 +3,11 @@ from pydub import AudioSegment
 from pydub.silence import detect_silence
 from pydub.utils import mediainfo
 from subprocess import Popen, PIPE
+from mutagen.mp3 import MP3
 
 
 
-print("Muter 1.0")
+print("Muter 1.1")
 
 if not os.path.exists("Result"):
     os.makedirs("Result")
@@ -34,9 +35,24 @@ except:
     threshold = -35
     print("Wrong value. Threshold is -35")
 
-iter = 0
+TAG_ABBRS = [
+    'TIT2', 'CHAP', 'CTOC', 'TIT1', 'TCON', 'COMM', 'TORY', 'TRCK',
+    'TYER', 'TDRC', 'TDAT', 'TIME', 'IPLS', 'TPE1', 'TIT3', 'POPM',
+    'APIC', 'TALB', 'TPE2', 'TSOT', 'TDEN', 'TIPL', 'RVAD'
+]
+TAG_WORDS = [
+    'Title', 'Chapter', 'Table of contents', 'Content group description',
+    'Content type (Genre)', 'User Comment', 'Original Release Year',
+    'Track Number', 'Year of recording', 'Recording Time',
+    'Date of recording (DDMM)', 'Time of recording (HHMM)',
+    'Involved People List', 'Lead Artist/Performer/Soloist/Group',
+    'Subtitle/Description refinement', 'Popularimeter', 'Attached Picture',
+    'Album', 'Band/Orchestra/Accompaniment', 'Title Sort Order key',
+    'Encoding Time', 'Involved People List', 'Relative volume adjustment'
+]
+TAGS = {}
+
 for wave in os.listdir("Audio"):
-    iter += 1
     if wave.endswith(".mp3"):
         sound = AudioSegment.from_file("Audio/" + wave)
         first = AudioSegment.silent(duration=0)
@@ -68,9 +84,15 @@ for wave in os.listdir("Audio"):
         first = AudioSegment.silent(duration=len(first))
         last = AudioSegment.silent(duration=len(last))
         output = first + center + last
+        
+        filetags = MP3("Audio/" +filename+ ".mp3")
+        
+        for tag in TAG_ABBRS:
+            if tag in filetags.keys():
+                TAGS[TAG_WORDS[TAG_ABBRS.index(tag)]] = filetags[tag].text[0]
+                
         output.export("Result/" +filename+ ".mp3", format="mp3",
-                      )
+                      bitrate=str(filetags.info.bitrate),
+                      tags=TAGS)
         print(filename + " is ready.")
-#        nam = "D:\\Mail\\David\\Audio\\sample_1.mp3"
-        print(mediainfo("Audio/" +filename+ ".mp3").get('TAG', {}))
 
